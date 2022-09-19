@@ -5,5 +5,5 @@
 .vscode
 .viminfo
 .tmp
-db
-log
+/db
+/log
