@@ -28,6 +28,7 @@ services:
       - ./rails/bundle:/usr/local/bundle:cached
     ports:
       - "3000:3000"
+    stdin_open: true
     tty: true
     links:
       - db
