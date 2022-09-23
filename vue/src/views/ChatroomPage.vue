@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <NavbarComponent />
-    <ChatWindow @connectCable="connectCable" :messages="formattedMessages" />
+    <ChatWindow @connectCable="connectCable" :messages="formattedMessages" ref="chatWindow" />
     <NewChatForm @connectCable="connectCable" />
   </div>
 </template>
@@ -63,10 +63,14 @@ export default {
     this.room = localStorage.getItem('uid')
     this.messageChannel = cable.subscriptions.create({ channel: 'RoomChannel', room: this.room }, {
       connected: () => {
-        this.getMessages()
+        this.getMessages().then(() => {
+          this.$refs.chatWindow.scrollToBottom()
+        })
       },
       received: () => {
-        this.getMessages()
+        this.getMessages().then(() => {
+          this.$refs.chatWindow.scrollToBottom()
+        })
       }
     })
   },
