@@ -8,7 +8,7 @@ module Mutations
 
     def resolve(content: nil)
       Message.create!(
-        user_id: 1,
+        user: context[:current_user],
         content: content,
       )
     end
