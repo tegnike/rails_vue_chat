@@ -82,6 +82,10 @@ GEM
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    graphiql-rails (1.8.0)
+      railties
+      sprockets-rails
+    graphql (2.0.14)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     listen (3.7.1)
@@ -176,6 +180,8 @@ DEPENDENCIES
   byebug
   devise
   devise_token_auth
+  graphiql-rails
+  graphql
   listen (~> 3.3)
   mysql2
   net-smtp
