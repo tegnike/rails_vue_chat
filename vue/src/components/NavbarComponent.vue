@@ -11,6 +11,7 @@
 
 <script>
 import axios from 'axios'
+import removeItem from '../auth/removeItem'
 
 export default {
   data () {
@@ -40,10 +41,7 @@ export default {
           this.$router.push({ name: 'Welcome' })
 
           console.log("ログアウトしました")
-          window.localStorage.removeItem('access-token')
-          window.localStorage.removeItem('client')
-          window.localStorage.removeItem('uid')
-          window.localStorage.removeItem('name')
+          removeItem()
         }
 
         return res
