@@ -1,8 +1,8 @@
-const setItem = (headers, name) => {
-  window.localStorage.setItem('access-token', headers['access-token'])
-  window.localStorage.setItem('client', headers.client)
-  window.localStorage.setItem('uid', headers.uid)
-  window.localStorage.setItem('name', name)
+const setItem = (responseData) => {
+  window.localStorage.setItem('access-token', responseData.userLogin.credentials.accessToken)
+  window.localStorage.setItem('client', responseData.userLogin.credentials.client)
+  window.localStorage.setItem('uid', responseData.userLogin.authenticatable.email)
+  window.localStorage.setItem('name', responseData.userLogin.authenticatable.name)
 }
 
 export default setItem
