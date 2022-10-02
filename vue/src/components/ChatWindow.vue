@@ -2,8 +2,8 @@
   <div class="chat-window">
     <div v-if="messages" class="messages" ref="messages">
       <ul v-for="message in messages" :key="message.id">
-        <li :class="{ received: message.email !== uid, sent: message.email === uid }">
-          <span class="name">{{ message.name }}</span>
+        <li :class="{ received: message.postedBy.email !== uid, sent: message.postedBy.email === uid }">
+          <span class="name">{{ message.postedBy.name }}</span>
           <div class="message" @dblclick="handleLike(message)">
             {{ message.content }}
             <div v-if="message.likes.length" class="heart-container">

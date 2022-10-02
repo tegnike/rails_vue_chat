@@ -10,10 +10,11 @@
 import NavbarComponent from '../components/NavbarComponent.vue'
 import ChatWindow from '../components/ChatWindow.vue'
 import NewChatForm from '../components/NewChatForm.vue'
-import axios from 'axios'
 import ActionCable from 'actioncable'
 import { formatDistanceToNow } from 'date-fns'
 import { ja } from 'date-fns/locale'
+import { useQuery } from "@vue/apollo-composable"
+import GET_MESSAGES from '../graphql/GetMessages.gql'
 
 export default {
   components: { NavbarComponent, ChatWindow, NewChatForm },
@@ -26,7 +27,7 @@ export default {
     formattedMessages () {
       if (!this.messages.length) { return [] }
       return this.messages.map(message => {
-        let time = formatDistanceToNow(new Date(message.created_at), { locale: ja })
+        let time = formatDistanceToNow(new Date(message.createdAt), { locale: ja })
         return { ...message, created_at: time }
       })
     }
@@ -34,19 +35,16 @@ export default {
   methods: {
     async getMessages () {
       try {
-        const res = await axios.get('http://localhost:3000/messages', {
-          headers: {
-            uid: window.localStorage.getItem('uid'),
-            "access-token": window.localStorage.getItem('access-token'),
-            client: window.localStorage.getItem('client')
-          }
+        const { onResult, onError } = await useQuery(GET_MESSAGES)
+
+        onResult((queryResult) => {
+          console.log(queryResult.data)
+          this.messages = queryResult.data.getMessages
         })
 
-        if (!res) {
-          throw new Error('メッセージ一覧を取得できませんでした')
-        }
-
-        this.messages = res.data
+        onError(error => {
+          throw error
+        })
       } catch (err) {
         console.log(err)
       }
