@@ -1,0 +1,12 @@
+mutation createLike ($messageId: ID!) {
+  createLike (
+    messageId: $messageId
+  ) {
+    message{
+      content
+    }
+    user {
+      name
+    }
+  }
+}

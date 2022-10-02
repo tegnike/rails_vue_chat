@@ -20,6 +20,8 @@
 
 <script>
 import axios from 'axios'
+import { useMutation } from "@vue/apollo-composable"
+import CREATE_LIKE from '../graphql/CreateLike.gql'
 
 export default {
   emits: ['connectCable'],
@@ -33,25 +35,23 @@ export default {
     handleLike (message) {
       for (let i = 0; i < message.likes.length; i++) {
         const like = message.likes[i]
-        if (like.email === this.uid) {
+        if (like.postedBy.email === this.uid) {
           this.deleteLike(like.id)
           return
         }
       }
+      this.createLike(message.id)
     },
     async createLike (messageId) {
       try {
-        const res = await axios.post(`http://localhost:3000/messages/${messageId}/likes`, {}, {
-          headers: {
-            uid: this.uid,
-            "access-token": window.localStorage.getItem('access-token'),
-            client: window.localStorage.getItem('client')
-          }
+        const { data, error } = await useMutation(CREATE_LIKE).mutate({
+          messageId: messageId
         })
 
-        if (!res) {
-          new Error('いいねできませんでした')
+        if (error) {
+          throw error
         }
+        console.log(data)
 
         this.$emit('connectCable')
       } catch (error) {
